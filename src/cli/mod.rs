@@ -1,3 +1,5 @@
+mod input;
+
 use clap::Parser;
 
 #[derive(Parser, Debug)]

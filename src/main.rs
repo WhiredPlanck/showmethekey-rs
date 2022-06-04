@@ -1,3 +1,7 @@
+mod cli;
+
+use clap::Parser;
+
 fn main() {
-    println!("Hello, world!");
+    let cli = cli::Cli::parse();
 }

@@ -55,8 +55,8 @@ pub fn print_key_and_button_event(event: &Event) -> Result<()> {
             });
             println!("{}", serde_json::to_string_pretty(&key_event)?);
         }
-        Event::Pointer(ev) => match ev {
-            PointerEvent::Button(e) => {
+        Event::Pointer(ev) => {
+            if let PointerEvent::Button(e) = ev {
                 let btn_code = e.button() as u16;
                 let btn_state = e.button_state();
                 let state_code: i32 = match &btn_state {
@@ -74,7 +74,6 @@ pub fn print_key_and_button_event(event: &Event) -> Result<()> {
                 });
                 println!("{}", serde_json::to_string_pretty(&btn_event)?);
             }
-            _ => ()
         },
         _ => ()
     }

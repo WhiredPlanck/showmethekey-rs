@@ -1,4 +1,4 @@
-mod input;
+pub mod input;
 
 use clap::Parser;
 

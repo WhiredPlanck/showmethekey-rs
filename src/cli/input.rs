@@ -2,32 +2,36 @@ use anyhow::Result;
 use input::{
     event::{
         keyboard::{KeyState, KeyboardEventTrait},
-        pointer::{PointerEventTrait, ButtonState},
+        pointer::{ButtonState, PointerEventTrait},
         EventTrait, PointerEvent,
     },
     Event, LibinputInterface,
 };
-use nix::unistd::close;
+use nix::libc::{O_RDONLY, O_RDWR, O_WRONLY};
 use serde_json::json;
 use std::{
-    fs::OpenOptions,
-    os::unix::prelude::{IntoRawFd, OpenOptionsExt, RawFd},
+    fs::{File, OpenOptions},
+    os::unix::prelude::{FromRawFd, IntoRawFd, OpenOptionsExt, RawFd},
     path::Path,
 };
 
-struct Interface;
+pub struct Interface;
 
 impl LibinputInterface for Interface {
     fn open_restricted(&mut self, path: &Path, flags: i32) -> Result<RawFd, i32> {
         OpenOptions::new()
             .custom_flags(flags)
+            .read((flags & O_RDONLY != 0) | (flags & O_RDWR != 0))
+            .write((flags & O_WRONLY != 0) | (flags & O_RDWR != 0))
             .open(path)
             .map(|file| file.into_raw_fd())
             .map_err(|err| err.raw_os_error().unwrap())
     }
 
     fn close_restricted(&mut self, fd: RawFd) {
-        close(fd).unwrap();
+        unsafe {
+            File::from_raw_fd(fd);
+        }
     }
 }
 
@@ -70,9 +74,9 @@ pub fn print_key_and_button_event(event: &Event) -> Result<()> {
                 });
                 println!("{}", key_event.to_string());
             }
-            _ => {}
+            _ => ()
         },
-        _ => {}
+        _ => ()
     }
 
     Ok(())

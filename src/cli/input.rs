@@ -5,13 +5,16 @@ use input::{
         pointer::{ButtonState, PointerEventTrait},
         EventTrait, PointerEvent,
     },
-    Event, LibinputInterface,
+    Event, Libinput, LibinputInterface,
 };
-use nix::libc::{O_RDONLY, O_RDWR, O_WRONLY};
+use nix::{
+    libc::{O_RDONLY, O_RDWR, O_WRONLY},
+    poll::{poll, PollFd, PollFlags},
+};
 use serde_json::json;
 use std::{
     fs::{File, OpenOptions},
-    os::unix::prelude::{FromRawFd, IntoRawFd, OpenOptionsExt, RawFd},
+    os::unix::prelude::{AsRawFd, FromRawFd, IntoRawFd, OpenOptionsExt, RawFd},
     path::Path,
 };
 
@@ -35,7 +38,7 @@ impl LibinputInterface for Interface {
     }
 }
 
-pub fn print_key_and_button_event(event: &Event) -> Result<()> {
+fn print_key_and_button_event(event: &Event) -> Result<()> {
     match event {
         Event::Keyboard(ev) => {
             let key_code = ev.key() as u16;
@@ -74,8 +77,20 @@ pub fn print_key_and_button_event(event: &Event) -> Result<()> {
                 });
                 println!("{}", serde_json::to_string_pretty(&btn_event)?);
             }
-        },
-        _ => ()
+        }
+        _ => (),
+    }
+
+    Ok(())
+}
+
+pub fn run_eventloop(input: &mut Libinput) -> Result<()> {
+    let pollfd = PollFd::new(input.as_raw_fd(), PollFlags::POLLIN);
+    while poll(&mut [pollfd], -1).is_ok() {
+        input.dispatch().unwrap();
+        for event in &mut *input {
+            print_key_and_button_event(&event)?;
+        }
     }
 
     Ok(())

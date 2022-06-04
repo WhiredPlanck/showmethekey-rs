@@ -53,7 +53,7 @@ pub fn print_key_and_button_event(event: &Event) -> Result<()> {
                 "state_code": state_code,
                 "state_name": format!("{:?}", key_state),
             });
-            println!("{}", key_event.to_string());
+            println!("{}", serde_json::to_string_pretty(&key_event)?);
         }
         Event::Pointer(ev) => match ev {
             PointerEvent::Button(e) => {
@@ -63,7 +63,7 @@ pub fn print_key_and_button_event(event: &Event) -> Result<()> {
                     ButtonState::Pressed => 1,
                     ButtonState::Released => 0,
                 };
-                let key_event = json!({
+                let btn_event = json!({
                     "event_name": "POINTER_BUTTON",
                     "device_name": e.device().name(),
                     "time_stamp": e.time(),
@@ -72,7 +72,7 @@ pub fn print_key_and_button_event(event: &Event) -> Result<()> {
                     "state_code": state_code,
                     "state_name": format!("{:?}", btn_state),
                 });
-                println!("{}", key_event.to_string());
+                println!("{}", serde_json::to_string_pretty(&btn_event)?);
             }
             _ => ()
         },

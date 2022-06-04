@@ -1,6 +1,9 @@
 [package]
 name = "showmethekey-rs"
 version = "0.1.0"
+description = "Show the key you typed on screen"
+authors = ["(C) AlynxZhou <alynx.zhou[at]gmail.com>",
+        "(Rust) WhiredPlanck <whiredplanck[at]outlook.com>"]
 edition = "2021"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html

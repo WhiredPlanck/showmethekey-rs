@@ -1,4 +1,5 @@
 mod cli;
+mod gui;
 
 use std::process;
 use anyhow::Result;
@@ -27,7 +28,10 @@ fn main() -> Result<()> {
 
                 cli::input::run_eventloop(&mut input)?;
             }, 
-            SubCommands::Gtk => {}
+            SubCommands::Gui => {
+                use slint::ComponentHandle;
+                gui::smtk_app::new().run();
+            }
         },
         None => unreachable!(),
     }

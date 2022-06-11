@@ -13,6 +13,6 @@ pub struct Cli {
 pub enum SubCommands {
     /// Launch the command line backend of Show Me The Key.
     Cli,
-    /// Launch the GTK GUI frontend of Show Me The Key.
-    Gtk,
+    /// Launch the GUI frontend of Show Me The Key.
+    Gui,
 }

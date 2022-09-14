@@ -1,5 +1,4 @@
 mod cli;
-mod gui;
 
 use std::process;
 use anyhow::Result;
@@ -23,15 +22,12 @@ fn main() -> Result<()> {
                     process::exit(1);
                 }
 
-                let mut input = Libinput::new_with_udev(cli::input::Interface);
+                let mut input = Libinput::new_with_udev(showmethekey_rs::Interface);
                 input.udev_assign_seat("seat0").unwrap();
 
-                cli::input::run_eventloop(&mut input)?;
+                showmethekey_rs::run_eventloop(&mut input)?;
             }, 
-            SubCommands::Gui => {
-                use slint::ComponentHandle;
-                gui::smtk_app::new().run();
-            }
+            
         },
         None => unreachable!(),
     }

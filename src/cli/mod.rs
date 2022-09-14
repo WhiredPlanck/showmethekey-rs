@@ -1,5 +1,3 @@
-pub mod input;
-
 use clap::Parser;
 
 #[derive(Parser, Debug)]
@@ -13,6 +11,4 @@ pub struct Cli {
 pub enum SubCommands {
     /// Launch the command line backend of Show Me The Key.
     Cli,
-    /// Launch the GUI frontend of Show Me The Key.
-    Gui,
 }

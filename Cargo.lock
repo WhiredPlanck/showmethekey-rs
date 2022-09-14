@@ -333,7 +333,7 @@ dependencies = [
 ]
 
 [[package]]
-name = "showmethekey-rs"
+name = "showmethekey-cli"
 version = "0.1.0"
 dependencies = [
  "anyhow",

@@ -1,7 +1,7 @@
 [package]
-name = "showmethekey-rs"
+name = "showmethekey-cli"
 version = "0.1.0"
-description = "Show the key you typed on screen"
+description = "The backend of Show Me The Key"
 authors = ["(C) AlynxZhou <alynx.zhou[at]gmail.com>",
         "(Rust) WhiredPlanck <whiredplanck[at]outlook.com>"]
 edition = "2021"

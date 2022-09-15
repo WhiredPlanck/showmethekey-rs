@@ -1,6 +1,6 @@
 [package]
 name = "showmethekey-cli"
-version = "0.1.0"
+version = "0.2.0"
 description = "The backend of Show Me The Key"
 authors = ["(C) AlynxZhou <alynx.zhou[at]gmail.com>",
         "(Rust) WhiredPlanck <whiredplanck[at]outlook.com>"]

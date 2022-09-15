@@ -1,6 +1,6 @@
 use std::process;
 use anyhow::Result;
-use clap::Parser;
+use clap::Command;
 use input::Libinput;
 
 #[inline]
@@ -8,12 +8,11 @@ fn is_root() -> bool {
     return nix::unistd::geteuid().is_root();
 }
 
-#[derive(Parser, Debug)]
-#[clap(author, version, about)]
-pub struct Cli;
-
 fn main() -> Result<()> {
-    Cli::parse();
+    Command::new("showmethekey-cli")
+        .version(env!("CARGO_PKG_VERSION"))
+        .about(env!("CARGO_PKG_DESCRIPTION"))
+        .get_matches();
 
     if !is_root() {
         println!("Please run me as root!");

@@ -1,6 +1,6 @@
 use std::process;
 use anyhow::Result;
-use clap::Command;
+use clap::{Command, Arg};
 use input::Libinput;
 
 #[inline]
@@ -9,9 +9,15 @@ fn is_root() -> bool {
 }
 
 fn main() -> Result<()> {
-    Command::new("showmethekey-cli-rs")
+    let args = Command::new("showmethekey-cli-rs")
         .version(env!("CARGO_PKG_VERSION"))
         .about(env!("CARGO_PKG_DESCRIPTION"))
+        .arg(
+            Arg::new("seat")
+                .short('s')
+                .value_name("SEAT_ID")
+                .help("Assign a custom seat to the libinput context")
+        )
         .get_matches();
 
     if !is_root() {
@@ -19,8 +25,10 @@ fn main() -> Result<()> {
         process::exit(1);
     }
 
+    let seat_id = args.value_of("seat").unwrap_or("seat0");
+
     let mut input = Libinput::new_with_udev(showmethekey_cli::Interface);
-    match input.udev_assign_seat("seat0") {
+    match input.udev_assign_seat(seat_id) {
         Ok(_) => showmethekey_cli::run_eventloop(&mut input).unwrap(),
         Err(_) => eprintln!("Failed to set seat."),
     }

@@ -22,10 +22,10 @@ fn main() -> Result<()> {
                     process::exit(1);
                 }
 
-                let mut input = Libinput::new_with_udev(showmethekey_rs::Interface);
+                let mut input = Libinput::new_with_udev(showmethekey_cli::Interface);
                 input.udev_assign_seat("seat0").unwrap();
 
-                showmethekey_rs::run_eventloop(&mut input)?;
+                showmethekey_cli::run_eventloop(&mut input)?;
             }, 
             
         },

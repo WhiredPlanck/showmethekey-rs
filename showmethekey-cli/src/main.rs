@@ -18,6 +18,7 @@ fn main() -> Result<()> {
             Arg::new("seat")
                 .short('s')
                 .value_name("SEAT_ID")
+                .default_value("seat0")
                 .help("Assign a custom seat to the libinput context")
         )
         .get_matches();
@@ -27,7 +28,7 @@ fn main() -> Result<()> {
         process::exit(1);
     }
 
-    let seat_id = args.value_of("seat").unwrap_or("seat0");
+    let seat_id = args.get_one::<String>("seat").unwrap();
 
     let mut input = Libinput::new_with_udev(interface::Interface);
     match input.udev_assign_seat(seat_id) {

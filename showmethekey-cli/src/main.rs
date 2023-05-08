@@ -1,3 +1,5 @@
+mod interface;
+
 use std::process;
 use anyhow::Result;
 use clap::{Command, Arg};
@@ -27,9 +29,9 @@ fn main() -> Result<()> {
 
     let seat_id = args.value_of("seat").unwrap_or("seat0");
 
-    let mut input = Libinput::new_with_udev(showmethekey_cli::Interface);
+    let mut input = Libinput::new_with_udev(interface::Interface);
     match input.udev_assign_seat(seat_id) {
-        Ok(_) => showmethekey_cli::run_eventloop(&mut input).unwrap(),
+        Ok(_) => interface::run_eventloop(&mut input).unwrap(),
         Err(_) => eprintln!("Failed to set seat."),
     }
 

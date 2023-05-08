@@ -1,12 +1,16 @@
 [package]
 name = "showmethekey-cli"
 version = "0.2.0"
-description = "The backend of Show Me The Key"
+description = "The backend of Show Me The Key (Rust version)"
 authors = ["(C) AlynxZhou <alynx.zhou[at]gmail.com>",
         "(Rust) WhiredPlanck <whiredplanck[at]outlook.com>"]
 edition = "2021"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[[bin]]
+name = "smtk-cli-rs"
+path = "src/main.rs"
 
 [dependencies]
 clap = "^4"
